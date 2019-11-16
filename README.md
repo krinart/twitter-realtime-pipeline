@@ -12,10 +12,10 @@ Dependencies:
 ## How so start 
 
 ### 1. Setup Twitter credentials.
-1. Log in into Twitter 
-2. [Apply for a developer account](https://developer.twitter.com/en/apply)
-3. [Create an application](https://developer.twitter.com/en/apps/create)
-4. Set Keys and Tokens
+- Log in into Twitter 
+- [Apply for a developer account](https://developer.twitter.com/en/apply)
+- [Create an application](https://developer.twitter.com/en/apps/create)
+- Set Keys and Tokens
     5. `echo {CONSUMER_KEY} > k8s/.env/CONSUMER_KEY`
     6. `echo {CONSUMER_SECRET} > k8s/.env/CONSUMER_SECRET`
     7. `echo {TOKEN} > k8s/.env/TOKEN`
