@@ -1,4 +1,3 @@
-
 SHELL := /bin/bash
 
 buildj:
@@ -18,11 +17,9 @@ helm:
 
 kafka:
 	helm install --name my-kafka incubator/kafka
-	kubectl apply -f k8s/infra/kafka-ui.yaml
 
 kafka-connect:
 	kubectl apply -f k8s/infra/kafka-connect.yaml
-	kubectl apply -f k8s/infra/kafka-connect-ui.yaml
 
 es:
 	kubectl apply -f k8s/infra/es.yaml
@@ -51,24 +48,19 @@ start:
 	kubectl apply -f k8s/flink-twitter-sentiment-analysis-app-kafka.yaml
 	kubectl apply -f k8s/ui-app.yaml
 
-foo:
-	echo "Building cluster"
+p1:
 	make cluster
-	echo "Creating secret with Twitter credentials"
-	make secret
-	echo "Initializing helm"
 	make helm
-	echo "Waiting for helm"
-	source scripts/wait.sh && wait 60
-	echo "Creating kafka"
-	make kafka
-	echo "Creating cassandra/flink/es/clients"
-	make cassandra
+	make secret
 	make flink
 	make clients
 	make es
-	echo "Waiting for kafka and cassandra"
-	make build
+
+p2:
+	make kafka
+	make cassandra
+
+p3:
 	make cassandrat
 	make kafka-connect
 	make start

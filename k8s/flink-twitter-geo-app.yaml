@@ -7,9 +7,10 @@ spec:
     spec:
       containers:
       - name: flink-twitter-geo-app
-        image: gcr.io/pragmatic-zoo-253123/flink_pipeline
+        image: krinart/flink_pipeline
         env:
         - name: FLINK_APP_MAIN_CLASS
           value: flink_pipeline.TwitterGeoApp
       restartPolicy: Never
   backoffLimit: 0
+

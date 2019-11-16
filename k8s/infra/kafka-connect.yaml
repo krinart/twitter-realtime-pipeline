@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: kafka-connect
-          image: gcr.io/pragmatic-zoo-253123/kafka-connect
+          image: krinart/kafka-connect
           ports:
             - containerPort: 8083
               name: rest
@@ -86,7 +86,7 @@ spec:
     spec:
       containers:
         - name: kafka-connect-install-sinks
-          image: gcr.io/pragmatic-zoo-253123/bbox
+          image: krinart/bbox
       restartPolicy: Never
   backoffLimit: 0
 

@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: ui-app
-          image: gcr.io/pragmatic-zoo-253123/ui_app
+          image: krinart/ui_app
           ports:
             - containerPort: 8080
               name: http

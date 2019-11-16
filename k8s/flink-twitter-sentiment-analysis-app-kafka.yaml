@@ -7,9 +7,10 @@ spec:
     spec:
       containers:
       - name: flink-twitter-sentiment-analysis-app
-        image: gcr.io/pragmatic-zoo-253123/flink_pipeline
+        image: krinart/flink_pipeline
         env:
         - name: FLINK_APP_MAIN_CLASS
           value: flink_pipeline.TwitterSentimentAnalysisAppKafka
       restartPolicy: Never
   backoffLimit: 0
+

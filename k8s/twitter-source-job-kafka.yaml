@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: twitter-source
-        image: gcr.io/pragmatic-zoo-253123/twitter_source
+        image: krinart/twitter_source
         args: ["TwitterSourceAppKafka"]
         env:
         - name: CONSUMER_KEY
@@ -32,3 +32,4 @@ spec:
               key: TOKEN_SECRET
       restartPolicy: Never
   backoffLimit: 0
+
