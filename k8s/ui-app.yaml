@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-app-svc
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: ws
+      port: 1337
+      targetPort: 1337
+  selector:
+    app: ui
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ui-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+        - name: ui-app
+          image: gcr.io/pragmatic-zoo-253123/ui_app
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 1337
+              name: ws
+

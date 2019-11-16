@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-rest-proxy
+spec:
+  clusterIP: None
+  ports:
+    - name: rest
+      port: 8082
+      targetPort: 8082
+  selector:
+    app: kafka-rest-proxy-dpl
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui
+spec:
+  type: LoadBalancer
+  ports:
+    - name: rest
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: kafka-ui-dpl
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-rest-proxy-dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka-rest-proxy-dpl
+    spec:
+      containers:
+        - name: kafka-rest-proxy-dpl
+          image: confluentinc/cp-kafka-rest
+          ports:
+            - containerPort: 8082
+              name: rest
+          env:
+            - name: KAFKA_REST_ZOOKEEPER_CONNECT
+              value: my-kafka-zookeeper-headless:2181
+            - name: KAFKA_REST_HOST_NAME
+              value: kafka-rest-proxy
+            - name: KAFKA_REST_BOOTSTRAP_SERVERS
+              value: PLAINTEXT://my-kafka-headless:9092
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-ui-dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka-ui-dpl
+    spec:
+      containers:
+        - name: kafka-ui-dpl
+          image: landoop/kafka-topics-ui
+          ports:
+            - containerPort: 8000
+              name: rest
+          env:
+            - name: KAFKA_REST_PROXY_URL
+              value: "http://kafka-rest-proxy:8082/"
+            - name: PROXY
+              value: "true"

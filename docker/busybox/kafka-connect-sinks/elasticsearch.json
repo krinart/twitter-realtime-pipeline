@@ -1,0 +1,13 @@
+{
+  "name": "kafka-to-es",
+  "config": {
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "tasks.max": "1",
+    "topics": "twitter-sentiment-analysis",
+    "key.ignore": "true",
+    "schema.ignore": "true",
+    "connection.url": "http://elasticsearch-loadbalancer:9200",
+    "type.name": "test-type"
+  }
+}
+

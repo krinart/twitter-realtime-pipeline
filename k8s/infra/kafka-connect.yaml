@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-connect-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: rest
+      port: 8083
+      targetPort: 8083
+  selector:
+    app: kafka-connect
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-connect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-connect
+  template:
+    metadata:
+      labels:
+        app: kafka-connect
+    spec:
+      containers:
+        - name: kafka-connect
+          image: gcr.io/pragmatic-zoo-253123/kafka-connect
+          ports:
+            - containerPort: 8083
+              name: rest
+          env:
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: "my-kafka-headless:9092"
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              value: "kafka-connect-service"
+            - name: CONNECT_REST_PORT
+              value: "8083"
+            - name: CONNECT_GROUP_ID
+              value: "connect-group"
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: "connect-configs"
+            - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_OFFSET_FLUSH_INTERVAL_MS
+              value: "10000"
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: "connect-offsets"
+            - name: CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: "connect-status"
+            - name: CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_KEY_CONVERTER
+              value: "org.apache.kafka.connect.storage.StringConverter"
+            - name: CONNECT_VALUE_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_INTERNAL_KEY_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_INTERNAL_VALUE_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_ZOOKEEPER_CONNECT
+              value: 'my-kafka-zookeeper-headless:2181'
+            - name: CLASSPATH
+              value: "/usr/share/java/monitoring-interceptors/monitoring-interceptors-5.1.0.jar:/usr/share/java/kafka-connect-cassandra-1.2.3-2.1.0-all.jar"
+            - name: CONNECT_PRODUCER_INTERCEPTOR_CLASSES
+              value: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+            - name: CONNECT_CONSUMER_INTERCEPTOR_CLASSES
+              value: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+            - name: CONNECT_PLUGIN_PATH
+              value: "/usr/share/java"
+            - name: CONNECT_LOG4J_LOGGERS
+              value: "org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR"
+            - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
+              value: "false"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-connect-install-sinks
+spec:
+  template:
+    spec:
+      containers:
+        - name: kafka-connect-install-sinks
+          image: gcr.io/pragmatic-zoo-253123/bbox
+      restartPolicy: Never
+  backoffLimit: 0
+

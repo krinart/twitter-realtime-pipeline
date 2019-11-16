@@ -1,0 +1,13 @@
+{
+  "name": "ui_app",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "1.1.0",
+    "kafkajs": "^1.11.0",
+    "websocket": "1.0.30"
+  }
+}

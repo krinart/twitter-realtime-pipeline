@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana-rest
+spec:
+  type: LoadBalancer
+  ports:
+  - name: rest
+    port: 5601
+    targetPort: 5601
+  selector:
+    app: kibana
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kibana
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: docker.elastic.co/kibana/kibana:6.5.0
+          resources:
+          env:
+            - name: SERVER_NAME
+              value: localhost
+            - name: ELASTICSEARCH_URL
+              value: http://elasticsearch-loadbalancer:9200
+          ports:
+            - containerPort: 5601
+              name: ui
+          readinessProbe:
+            httpGet:
+              path: /api/status
+              port: ui
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+

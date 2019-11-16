@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-connect-ui-svc
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: kafka-connect-ui
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-connect-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-connect-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-connect-ui
+    spec:
+      containers:
+        - name: kafka-connect-ui
+          image: landoop/kafka-connect-ui:latest
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: CONNECT_URL
+              value: "http://kafka-connect-service:8083"
+
