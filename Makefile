@@ -38,27 +38,24 @@ cassandrat:
 flink:
 	kubectl apply -f k8s/infra/flink.yaml
 
-make cluster:
+cluster:
 	gcloud beta container --project "pragmatic-zoo-253123" clusters create "standard-cluster-1" --zone "us-central1-a" --no-enable-basic-auth --cluster-version "1.13.11-gke.14" --machine-type "n1-standard-4" --image-type "COS" --disk-type "pd-standard" --disk-size "100" --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --num-nodes "3" --enable-cloud-logging --enable-cloud-monitoring --enable-ip-alias --network "projects/pragmatic-zoo-253123/global/networks/default" --subnetwork "projects/pragmatic-zoo-253123/regions/us-central1/subnetworks/default" --default-max-pods-per-node "110" --addons HorizontalPodAutoscaling,HttpLoadBalancing --enable-autoupgrade --enable-autorepair
 	gcloud container clusters get-credentials standard-cluster-1 --zone us-central1-a --project pragmatic-zoo-253123
 
-make initialize:
+initialize:
 	make helm
 	make secret
 
-make infra1:
+infra:
 	make kafka
 	make cassandra
 	make clients
 	make flink
 	make es
 
-infra2:
+start:
 	make cassandrat
 	make kafka-connect
-	make start
-
-start:
 	kubectl apply -f k8s/twitter-source-job-kafka.yaml
 	kubectl apply -f k8s/flink-twitter-geo-app.yaml
 	kubectl apply -f k8s/flink-twitter-sentiment-analysis-app-kafka.yaml

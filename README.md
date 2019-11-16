@@ -24,15 +24,14 @@ Dependencies:
 ### 2. Create and deploy kubernetes cluster
 - `make cluster`  (this command will create cluster)
 - `make initialize` (this command installs `helm` and `secret` with Twitter credentials)
-- wait for couple of minutes
-- `make infra1` (this command installs kafka/cassandra/flink/es)
+- wait for couple of minutes for help to initialize
+- `make infra` (this command installs kafka/cassandra/flink/es)
 - wait until `kubectl pods` shows that all 3 instances of each cassandra and kafka are up and running
-- `make infra2` (this command initializes cassandra tables and kafka connect sinks)
-- `make start` (this command will start the actual pipelines and ui)
+- `make start` (this command will start twitter source job, flink pipelines and ui)
 
 ## How to see the results:
-- UI: `kubectl get service/ui-app-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` will give you an ip and then open http://{ip}:8080
-- Kibana: `kubectl get service/kibana-rest -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` will give you an ip and then open http://{ip}:5601
+- UI: `kubectl get service/ui-app-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` will give you ip and then open http://{ip}:8080
+- Kibana: `kubectl get service/kibana-rest -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` will give you ip and then open http://{ip}:5601
 - Cassandra: `echo "select count(*) from ks.twitter_sentiment_analysis; exit" | kubectl exec -i cassandra-client cqlsh cassandra` 
 
 ## Example of how UI should look like:
