@@ -3,7 +3,7 @@
 This repository contains an example of Twitter realtime analysis pipeline.
 
 The high level design looks like this:
-![alt text](images/Design2.png "Logo Title Text 1")
+![alt text](images/Design.png "Logo Title Text 1")
 
 Dependencies:
 - Kubernetes
