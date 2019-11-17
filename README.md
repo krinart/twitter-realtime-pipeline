@@ -7,19 +7,25 @@ The high level design looks like this:
 
 Dependencies:
 - Kubernetes
+- Helm
 - Google Cloud SDK (optional to create a Kubernetes cluster)
 
 ## How so start 
 
-### 1. Setup Twitter credentials.
+### 0. Prerequisites
+- Install [Google Cloud SDK](https://cloud.google.com/sdk/install) (optional)
+- Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- Install helm: `curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash`
+
+### 1. Setup Twitter credentials
 - Log in into Twitter 
 - [Apply for a developer account](https://developer.twitter.com/en/apply)
 - [Create an application](https://developer.twitter.com/en/apps/create)
 - Set Keys and Tokens
-    * `echo {CONSUMER_KEY} > k8s/.env/CONSUMER_KEY`
-    * `echo {CONSUMER_SECRET} > k8s/.env/CONSUMER_SECRET`
-    * `echo {TOKEN} > k8s/.env/TOKEN`
-    * `echo {TOKEN_SECRET} > k8s/.env/TOKEN_SECRET`
+    * `echo -n {CONSUMER_KEY} > k8s/.env/CONSUMER_KEY`
+    * `echo -n {CONSUMER_SECRET} > k8s/.env/CONSUMER_SECRET`
+    * `echo -n {TOKEN} > k8s/.env/TOKEN`
+    * `echo -n {TOKEN_SECRET} > k8s/.env/TOKEN_SECRET`
 
 ### 2. Create and deploy kubernetes cluster
 - `make cluster`  (this command will create cluster)
@@ -34,6 +40,6 @@ Dependencies:
 - Kibana: `kubectl get service/kibana-rest -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` will give you ip and then open http://{ip}:5601
 - Cassandra: `echo "select count(*) from ks.twitter_sentiment_analysis; exit" | kubectl exec -i cassandra-client cqlsh cassandra` 
 
-## Example of how UI should look like:
+## Example of how UI looks like:
 ![alt text](images/geo-ui.gif "Logo Title Text 1")
 
