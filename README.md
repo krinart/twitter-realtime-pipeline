@@ -2,6 +2,10 @@
 
 This repository contains an example of Twitter realtime analysis pipeline.
 
+### High level design
+![alt text](images/Design.png "Logo Title Text 1")
+
+* [Dependencies](#dependencies)
 * [How so start](#how-to-start)
 * [How to see the results](#how-to-see-the-results)
 * [Twitter Source Job Description](#twitter-source-job)
@@ -9,10 +13,7 @@ This repository contains an example of Twitter realtime analysis pipeline.
 * [Flink Geo Aggregation Pipeline Description](#flink-geo-aggregation-pipeline)
 * [UI Description](#ui)
 
-The high level design looks like this:
-![alt text](images/Design.png "Logo Title Text 1")
-
-Dependencies:
+### Dependencies
 - Kubernetes
 - Helm
 - Google Cloud SDK (optional to create a Kubernetes cluster)
