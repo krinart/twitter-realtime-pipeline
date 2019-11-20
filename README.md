@@ -2,9 +2,7 @@
 
 This repository contains an example of Twitter realtime analysis pipeline.
 
-### High level design
-![alt text](images/Design.png "Logo Title Text 1")
-
+* [High level design](#high-level-design)
 * [Dependencies](#dependencies)
 * [How so start](#how-to-start)
 * [How to see the results](#how-to-see-the-results)
@@ -12,6 +10,9 @@ This repository contains an example of Twitter realtime analysis pipeline.
 * [Flink Sentiment Analysis Pipeline Description](#flink-sentiment-analysis-pipeline)
 * [Flink Geo Aggregation Pipeline Description](#flink-geo-aggregation-pipeline)
 * [UI Description](#ui)
+
+### High level design
+![alt text](images/Design.png "Logo Title Text 1")
 
 ### Dependencies
 - Kubernetes
