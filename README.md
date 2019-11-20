@@ -59,7 +59,7 @@ The model is probably the most interesting part of this pipeline.
 This is how this model is created (you can see this process in details [here](https://github.com/krinart/twitter-realtime-pipeline/blob/master/ml/Sentiment%20Analysis.ipynb)):
 1. We need a dataset of texts with assigned sentiment - I took [Sentiment140](http://help.sentiment140.com/for-students/) 
 2. We also need a set of pre-trained word embeddings - I took [Glove](https://nlp.stanford.edu/projects/glove/)
-3. Using pre-trained word embeddings and dataset of texts with assigned word embeddins we can train an [Xgboost](https://xgboost.readthedocs.io/en/latest/) classifier which predicts sentiment for the given word enbedding
+3. Using pre-trained word embeddings and dataset of texts with assigned sentiment we can train an [Xgboost](https://xgboost.readthedocs.io/en/latest/) classifier which predicts sentiment for the given word enbedding
 4. Since the trained model is a Python object and we need to use it in JVM environment, I used [m2cgen](https://github.com/BayesWitnesses/m2cgen) library to generate Java code for the model (I'm also a co-author of this library)
 5. The only thing left is to export word embeddings to use them in the flink pipeline
 6. Now we can [apply this model](https://github.com/krinart/twitter-realtime-pipeline/blob/master/flink_pipeline/src/main/scala/flink_pipeline/ScoreTweetMap.scala#L11-L18) for every tweet in real time.
@@ -82,7 +82,7 @@ Since tweets might not arrive in order we need to accommodate for some lateness.
 After some experiments I've discovered that bounded lateness of 3.5 seconds provides the best trade off between the number of 
 tweets arriving after the window has been closed and the number of open windows.
 3. In order to group tweets by location and by time, following transformations [are performed](https://github.com/krinart/twitter-realtime-pipeline/blob/master/flink_pipeline/src/main/scala/flink_pipeline/utils/pipelines.scala#L48-L65):
-    * Split the world's map into of cells
+    * Split the world's map into cells
     * Convert each tweet into (cellX, cellY) tuple
     * Apply time window of 5 seconds
     * Calculate the number of tweets per each window/cell
@@ -92,12 +92,12 @@ tweets arriving after the window has been closed and the number of open windows.
 
 ## UI Description
 
-UI consists of 2 parts: Web Client written in JS connecting to NodeJS server using Websockets.
+UI consists of 2 parts: Web Client written in JS connecting to NodeJS server using WebSockets.
 The implementation of both of them is pretty straightforward:
 - NodeJS server connects to Kafka at the startup
 - When user opens the page in the browser, web client establishes WebSocket connection to the NodeJS server
-- Server keeps a set of current WebSocket connections from the clients
-- For every messages consumed from Kafka Server writes it to every WebSocket connection.
+- Server keeps a set of current WebSocket connections from the Web clients
+- For every messages consumed from Kafka, Server writes it to every WebSocket connection.
 - When WebSocket connection is closed, Server deletes it from the set of current connections. 
 
 This is how ui looks like:
