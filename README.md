@@ -2,6 +2,13 @@
 
 This repository contains an example of Twitter realtime analysis pipeline.
 
+* [How so start](#how-to-start)
+* [How to see the results](#how-to-see-the-results)
+* [Twitter Source Job Description](#twitter-source-job)
+* [Flink Sentiment Analysis Pipeline Description](#flink-sentiment-analysis-pipeline)
+* [Flink Geo Aggregation Pipeline Description](#flink-geo-aggregation-pipeline)
+* [UI Description](#ui)
+
 The high level design looks like this:
 ![alt text](images/Design.png "Logo Title Text 1")
 
