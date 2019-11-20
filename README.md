@@ -8,7 +8,7 @@ This repository contains an example of Twitter realtime analysis pipeline.
 * [How to see the results](#how-to-see-the-results)
 * [Twitter Source Job Description](#twitter-source-job-description)
 * [Flink Sentiment Analysis Pipeline Description](#flink-sentiment-analysis-pipeline-description)
-* [Flink Geo Aggregation Pipeline Description](#flink-geo-aggregation-pipeline-description)
+* [Flink Geo Aggregation Pipeline Description (including ML model)](#flink-geo-aggregation-pipeline-description)
 * [UI Description](#ui)
 
 ### High level design
