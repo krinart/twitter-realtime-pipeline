@@ -6,9 +6,9 @@ This repository contains an example of Twitter realtime analysis pipeline.
 * [Dependencies](#dependencies)
 * [How so start](#how-to-start)
 * [How to see the results](#how-to-see-the-results)
-* [Twitter Source Job Description](#twitter-source-job)
-* [Flink Sentiment Analysis Pipeline Description](#flink-sentiment-analysis-pipeline)
-* [Flink Geo Aggregation Pipeline Description](#flink-geo-aggregation-pipeline)
+* [Twitter Source Job Description](#twitter-source-job-description)
+* [Flink Sentiment Analysis Pipeline Description](#flink-sentiment-analysis-pipeline-description)
+* [Flink Geo Aggregation Pipeline Description](#flink-geo-aggregation-pipeline-description)
 * [UI Description](#ui)
 
 ### High level design
@@ -19,7 +19,7 @@ This repository contains an example of Twitter realtime analysis pipeline.
 - Helm
 - Google Cloud SDK (optional to create a Kubernetes cluster)
 
-## How so start 
+## How to start 
 
 ### 0. Prerequisites
 - Install [Google Cloud SDK](https://cloud.google.com/sdk/install) (optional)
@@ -49,12 +49,10 @@ This repository contains an example of Twitter realtime analysis pipeline.
 - Kibana: `kubectl get service/kibana-rest -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` will give you ip and then open http://{ip}:5601
 - Cassandra: `echo "select count(*) from ks.twitter_sentiment_analysis; exit" | kubectl exec -i cassandra-client cqlsh cassandra` 
 
-## Details about jobs/pipelines
-
-### Twitter Source Job
+## Twitter Source Job Description
 Twitter Source job is pretty simple: it uses [Twitter's client library](https://github.com/twitter/hbc) to connect to [twitter realtime API](https://developer.twitter.com/en/docs/tweets/filter-realtime/api-reference/post-statuses-filter) and writes all received tweets into Kafka. 
 
-### Flink Sentiment Analysis Pipeline
+## Flink Sentiment Analysis Pipeline Description
 This pipeline performs a simple task - applies sentiment prediction model to every tweet. 
 The model is probably the most interesting part of this pipeline. 
 
@@ -66,7 +64,7 @@ This is how this model is created (you can see this process in details [here](ht
 5. The only thing left is to export word embeddings to use them in the flink pipeline
 6. Now we can [apply this model](https://github.com/krinart/twitter-realtime-pipeline/blob/master/flink_pipeline/src/main/scala/flink_pipeline/ScoreTweetMap.scala#L11-L18) for every tweet in real time.
 
-### Flink Geo Aggregation Pipeline
+## Flink Geo Aggregation Pipeline Description
 This pipeline aggregates tweets by geographical location as well as by 5 seconds intervals.
 The output of this pipeline is the stream of messages in the following format:
 ```json
@@ -92,7 +90,7 @@ tweets arriving after the window has been closed and the number of open windows.
     * Now all we need to do is to convert (cellX, cellY) to (lon, lat) and to add the window's timestamp to the final message
 4. Serialize final message into JSON and push it into Kafka.
 
-### UI:
+## UI Description
 
 UI consists of 2 parts: Web Client written in JS connecting to NodeJS server using Websockets.
 The implementation of both of them is pretty straightforward:
